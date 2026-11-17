@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c1424">
+  <title>WebShield — Local Security Scanner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="WebShield home">
+        <span class="brand-mark">W</span><span>webshield</span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <nav aria-label="Main navigation">
+        <a class="nav-link active" href="#overview"><span class="nav-icon">▦</span> Overview</a>
+        <a class="nav-link" href="#findings"><span class="nav-icon">⌕</span> Findings <span id="nav-count" class="nav-count">0</span></a>
+        <a class="nav-link" href="#surface"><span class="nav-icon">◎</span> Attack surface</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="local-card"><span class="pulse"></span><div><strong>Local-only mode</strong><small>Targets stay on this device</small></div></div>
+        <div class="profile"><div class="avatar">WS</div><div><strong>Security workspace</strong><small>Authorized testing</small></div></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="breadcrumb">Workspace <span>/</span> <strong>Overview</strong></div>
+        <div class="top-actions"><span class="safe-label"><span class="pulse"></span> SAFE SCAN MODE</span><button id="new-scan-top" class="button button-primary small">＋ New scan</button></div>
+      </header>
+      <div class="content" id="overview">
+        <section class="welcome">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-line"></span> APPLICATION SECURITY</div>
+            <h1>See your security<br><span>from the inside.</span></h1>
+            <p class="welcome-copy">Map your local application, review its security posture, and get practical fixes — all from one place.</p>
+            <button id="new-scan-hero" class="button button-primary">Start a scan <span>→</span></button>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="shield"><div class="shield-inner">✓</div></div>
+            <span class="art-dot dot-one"></span><span class="art-dot dot-two"></span><span class="art-dot dot-three"></span>
+            <div class="art-tag">LOCAL TARGET <strong>● Protected</strong></div>
+          </div>
+        </section>
+
+        <section class="stats-grid" aria-label="Scan summary">
+          <article class="stat-card"><div class="stat-top"><span>Pages mapped</span><span class="stat-icon cyan">⌘</span></div><div class="stat-value" id="stat-pages">—</div><div class="stat-foot">Across the latest scan</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Forms discovered</span><span class="stat-icon purple">▤</span></div><div class="stat-value" id="stat-forms">—</div><div class="stat-foot">Input points to review</div></article>
+          <article class="stat-card"><div class="stat-top"><span>Findings</span><span class="stat-icon orange">⚑</span></div><div class="stat-value" id="stat-findings">—</div><div class="stat-foot"><span id="stat-severity">Start a scan to see results</span></div></article>
+          <article class="stat-card"><div class="stat-top"><span>Latest scan</span><span class="stat-icon green">◷</span></div><div class="stat-value stat-date" id="stat-date">—</div><div class="stat-foot" id="stat-target">No scan yet</div></article>
+        </section>
+
+        <section class="scan-panel" id="scan-panel">
+          <div class="section-heading">
+            <div><div class="eyebrow">QUICK START</div><h2>Scan a local application</h2></div>
+            <span class="method-pill"><span class="pulse"></span> Passive checks only</span>
+          </div>
+          <form id="scan-form" class="scan-form">
+            <label for="target-url">Target URL</label>
+            <div class="input-row"><span class="input-prefix">⌕</span><input id="target-url" name="target" type="url" placeholder="http://127.0.0.1:3000" autocomplete="url" required><button class="button button-primary" type="submit" id="scan-button">Start scan <span>→</span></button></div>
+            <div class="form-hint"><span class="hint-lock">▣</span> Only localhost and loopback addresses are accepted. Use only systems you own or are authorized to test.</div>
+          </form>
+          <div id="scan-progress" class="progress-wrap" hidden>
+            <div class="progress-line"><span id="progress-label">Mapping local pages…</span><span id="progress-number">0%</span></div>
+            <div class="progress-track"><div id="progress-bar"></div></div>
+          </div>
+          <div id="scan-error" class="error-banner" role="alert" hidden></div>
+        </section>
+
+        <section class="lower-grid">
+          <article class="data-panel findings-panel" id="findings">
+            <div class="panel-heading"><div><div class="eyebrow">LATEST RESULTS</div><h2>Security findings</h2></div><button id="download-report" class="button button-quiet" disabled>↓ Export report</button></div>
+            <div id="findings-list" class="empty-state"><div class="empty-icon">✓</div><strong>Ready when you are</strong><p>Run a scan to see security observations and recommended fixes.</p></div>
+          </article>
+          <article class="data-panel surface-panel" id="surface">
+            <div class="panel-heading"><div><div class="eyebrow">DISCOVERY</div><h2>Attack surface</h2></div><span class="counter" id="surface-count">0</span></div>
+            <div id="surface-list" class="empty-state compact"><div class="empty-icon">◎</div><strong>No pages mapped</strong><p>Discovered pages and input forms will appear here.</p></div>
+          </article>
+        </section>
+        <section class="data-panel history-panel" id="history">
+          <div class="panel-heading"><div><div class="eyebrow">RECENT ACTIVITY</div><h2>Scan history</h2></div><span class="counter" id="history-count">0</span></div>
+          <div id="history-list" class="empty-state compact"><div class="empty-icon">◷</div><strong>No scans yet</strong><p>Completed scan summaries will appear here while the scanner is running.</p></div>
+        </section>
+        <div class="disclaimer"><span>ⓘ</span><p><strong>Safe scanning by design.</strong> WebShield sends GET requests only to the same local origin. It does not submit forms or send SQL injection, XSS, or traversal payloads. Findings are passive indicators, not a penetration test.</p></div>
+        <footer>WEBSHIELD <span>•</span> LOCAL APPLICATION SECURITY TOOL</footer>
+      </div>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>
